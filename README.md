@@ -302,6 +302,15 @@ Here we go :
   - "`netcat`, écoute sur le port numéro 8888 stp"
 - il se passe rien ? Normal, faut attendre qu'un client se connecte
 
+```
+nc.exe -l -p 8888
+salut
+pp
+salut
+bravo
+ggwp
+```
+
 🌞 **sur le PC *client*** avec par exemple l'IP 192.168.1.2
 
 - `nc.exe 192.168.1.1 8888`
@@ -309,6 +318,14 @@ Here we go :
 - une fois fait, vous pouvez taper des messages dans les deux sens
 - appelez-moi quand ça marche ! :)
 - si ça marche pas, essayez d'autres options de `netcat`
+
+```
+[alex@fedora ~]$ nc 10.10.10.70 8888
+salut
+pp
+salut
+bravo
+```
 
 ---
 
@@ -328,6 +345,10 @@ $ ss -atnp
 $ netstat -a -n # je crois :D
 ```
 
+```
+ESTAB       0        0            10.10.10.69:48888          10.10.10.70:8888    users:(("nc",pid=16933,fd=3))  
+```
+
 🌞 **Pour aller un peu plus loin**
 
 - si vous faites un `netstat` sur le serveur AVANT que le client `netcat` se connecte, vous devriez observer que votre serveur `netcat` écoute sur toutes vos interfaces
@@ -342,6 +363,36 @@ $ nc.exe -l -p PORT_NUMBER -s IP_ADDRESS
 $ nc.exe -l -p 9999 -s 192.168.1.37
 ```
 
+```
+C:\Users\maelf\Downloads\netcat-win32-1.11(2)\netcat-1.11>netstat
+
+Connexions actives
+
+  Proto  Adresse locale         Adresse distante       État
+  TCP    10.33.17.18:52828      52.97.16.130:https     ESTABLISHED
+  TCP    10.33.17.18:53161      52.112.120.13:https    ESTABLISHED
+  TCP    10.33.17.18:53168      20.90.152.133:https    ESTABLISHED
+  TCP    10.33.17.18:53169      20.90.152.133:https    ESTABLISHED
+  TCP    10.33.17.18:56650      ec2-34-202-207-135:https  ESTABLISHED
+  TCP    10.33.17.18:57006      ec2-63-32-136-173:https  ESTABLISHED
+  TCP    10.33.17.18:57020      ec2-54-225-152-45:https  ESTABLISHED
+  TCP    10.33.17.18:57029      162.159.134.234:https  ESTABLISHED
+  TCP    10.33.17.18:57034      20.199.120.85:https    ESTABLISHED
+  TCP    10.33.17.18:57035      20.199.120.85:https    ESTABLISHED
+  TCP    10.33.17.18:57037      52.112.120.19:https    ESTABLISHED
+  TCP    10.33.17.18:57046      104.18.12.33:https     ESTABLISHED
+  TCP    10.33.17.18:59977      162.159.129.232:https  ESTABLISHED
+  TCP    10.33.17.18:60048      172.65.251.78:https    ESTABLISHED
+  TCP    10.33.17.18:60059      a96-16-249-35:https    CLOSE_WAIT
+  TCP    10.33.17.18:60060      a96-16-249-35:https    CLOSE_WAIT
+  TCP    10.33.17.18:60063      52.97.146.194:https    ESTABLISHED
+  TCP    10.33.17.18:60159      20.189.173.6:https     ESTABLISHED
+  TCP    10.33.17.18:60175      server-52-222-158-19:https  ESTABLISHED
+  TCP    127.0.0.1:58399        LAPTOP-5JDPJGNB:60441  ESTABLISHED
+  TCP    127.0.0.1:60183        LAPTOP-5JDPJGNB:27300  SYN_SENT
+  TCP    127.0.0.1:60441        LAPTOP-5JDPJGNB:58399  ESTABLISHED
+```
+
 ## 6. Firewall
 
 Toujours par 2.
@@ -354,12 +405,30 @@ Le but est de configurer votre firewall plutôt que de le désactiver
   - configurer le firewall de votre OS pour accepter le `ping`
   - aidez vous d'internet
   - on rentrera dans l'explication dans un prochain cours mais sachez que `ping` envoie un message *ICMP de type 8* (demande d'ECHO) et reçoit un message *ICMP de type 0* (réponse d'écho) en retour
+
+```
+systemctl enable firewalld
+```
+```
+firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p icmp -s 0.0.0.0/0 -d 0.0.0.0/0 -j ACCEPT
+sudo systemctl restart firewalld.service
+```
+
 - autoriser le traffic sur le port qu'utilise `nc`
   - on parle bien d'ouverture de **port** TCP et/ou UDP
   - on ne parle **PAS** d'autoriser le programme `nc`
   - choisissez arbitrairement un port entre 1024 et 20000
   - vous utiliserez ce port pour communiquer avec `netcat` par groupe de 2 toujours
   - le firewall du *PC serveur* devra avoir un firewall activé et un `netcat` qui fonctionne
+
+```
+[alex@fedora ~]$ nc 10.10.10.70 8888
+feak
+faekf
+eafeak
+fea
+en legende
+```
   
 # III. Manipulations d'autres outils/protocoles côté client
 
@@ -392,16 +461,51 @@ Si votre navigateur fonctionne "normalement" (il vous permet d'aller sur `google
 
 🌞** Trouver l'adresse IP du serveur DNS que connaît votre ordinateur**
 
+```
+alex@fedora ~]$ ip r
+10.33.17.81
+```
+
 🌞 Utiliser, en ligne de commande l'outil `nslookup` (Windows, MacOS) ou `dig` (GNU/Linux, MacOS) pour faire des requêtes DNS à la main
 
 - faites un *lookup* (*lookup* = "dis moi à quelle IP se trouve tel nom de domaine")
   - pour `google.com`
+    
+```
+dig google.com
+google.com.		9	IN	A	216.58.204.142
+
+216.58.204.142, est l'ip de google on peut donc se connecter a google depuis cette ip, google nous l'autorisant
+```
+    
   - pour `ynov.com`
+
+```
+dig ynov.com
+ynov.com.		300	IN	A	104.26.11.233
+ynov.com.		300	IN	A	104.26.10.233
+ynov.com.		300	IN	A	172.67.74.226
+
+contrairement a google on ne peut pas se connecter a ynov depuis ces ip, ynov acceptant seulemenet le nom de domaine. ynov a 3 ip car les dns sont utilises pour repartir la charge sur les serveurs.
+```
+
   - interpréter les résultats de ces commandes
 - déterminer l'adresse IP du serveur à qui vous venez d'effectuer ces requêtes
 - faites un *reverse lookup* (= "dis moi si tu connais un nom de domaine pour telle IP")
   - pour l'adresse `78.73.21.21`
+
+```
+dig -x 78.73.21.21
+21.21.73.78.in-addr.arpa. 3600	IN	PTR	78-73-21-21-no168.tbcn.telia.com.
+```
+
   - pour l'adresse `22.146.54.58`
+
+```
+dig -x 22.146.54.58
+in-addr.arpa.		685	IN	SOA	b.in-addr-servers.arpa. nstld.iana.org. 2022090341 1800 900 604800 3600
+```
+
   - interpréter les résultats
   - *si vous vous demandez, j'ai pris des adresses random :)*
 
@@ -427,7 +531,15 @@ Un peu austère aux premiers abords, une manipulation très basique permet d'avo
 🌞 Utilisez le pour observer les trames qui circulent entre vos deux carte Ethernet. Mettez en évidence :
 
 - un `ping` entre vous et votre passerelle
+
+![](https://i.imgur.com/ijND1XU.png)
+
+
 - un `netcat` entre vous et votre mate, branché en RJ45
+
+![](https://i.imgur.com/7lcT3Up.png)
+
+
 - une requête DNS. Identifiez dans la capture le serveur DNS à qui vous posez la question.
 - prenez moi des screens des trames en question
 - on va prendre l'habitude d'utiliser Wireshark souvent dans les cours, pour visualiser ce qu'il se passe
