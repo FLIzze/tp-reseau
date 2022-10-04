@@ -544,6 +544,35 @@ Un peu austère aux premiers abords, une manipulation très basique permet d'avo
 - prenez moi des screens des trames en question
 - on va prendre l'habitude d'utiliser Wireshark souvent dans les cours, pour visualiser ce qu'il se passe
 
+## 2. Bonus : avant-goût TCP et UDP
+
+TCP et UDP ce sont les deux protocoles qui utilisent des ports. Si on veut accéder à un service, sur un serveur, comme un site web :
+
+- il faut pouvoir joindre en terme d'IP le correspondant
+  - on teste que ça fonctionne avec un `ping` généralement
+- il faut que le serveur fasse tourner un programme qu'on appelle "service" ou "serveur"
+  - le service "écoute" sur un port TCP ou UDP : il attend la connexion d'un client
+  - comme vous avez fait avec `netcat` !
+  - sauf qu'un netcat pourri, on peut par exemple faire tourner un site web
+  - et donc plutôt qu'un autre netcat pourri, il faudra utiliser un navigateur web pour s'y connecter
+- le client **connaît par avance le port TCP ou UDP sur lequel le service écoute**
+- en utilisant l'IP et le port, il peut se connecter au service en utilisant un moyen adapté :
+  - un navigateur web pour un site web
+  - un `ncat` pour se connecter à un autre `ncat`
+  - et plein d'autres, **de façon générale on parle d'un client, et d'un serveur**
+
+🌞 **Wireshark it**
+
+- déterminez à quelle IP et quel port votre PC se connecte quand vous regardez une vidéo Youtube
+  - il sera sûrement plus simple de repérer le trafic Youtube en fermant tous les autres onglets et toutes les autres applications utilisant du réseau
+
+```
+Port : 52015
+IP : 10.33.17.81 et une partie de 216.58.198.214 (google)
+```
+
+---
+
 # Bilan
 
 **Vu pendant le TP :**
