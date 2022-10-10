@@ -305,7 +305,7 @@ L'échange DHCP  entre un client et le serveur DHCP consiste en 4 trames : **DOR
 
 ```
 4 trames;
--1 : Discover -> mon ip est 0.0.0.0 car pour le moment je n'ai pas d'adresse ip et je découvre tout le réseau
+-1 : Discover -> je découvre le réseau, je suis donc sur l'ip 0.0.0.0
 -2 :0ffer -> le routeur me propose une adresse ip disponible
 -3 : Request -> j'accepte ou je refuse cette offre
 -4 : Ack -> le routeur reconnait mon acceptation/refus
