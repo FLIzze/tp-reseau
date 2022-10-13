@@ -305,16 +305,10 @@ PING google.com (142.250.179.78) 56(84) bytes of data.
 
 - effectuez un `ping 8.8.8.8` depuis `john`
 - capturez le ping depuis `john` avec `tcpdump`
-
-```
-istening on enp0s8, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-17:07:53.911126 IP localhost.localdomain > dns.google: ICMP echo request, id 5, seq 1, length 64
-17:07:53.950821 IP dns.google > localhost.localdomain: ICMP echo reply, id 5, seq 1, length 64
-```
-
 - analysez un ping aller et le retour qui correspond et mettez dans un tableau :
 
 ```
+avec localhost qui a comme ip 10.3.1.11 et le dns 8.8.8.8.
 17:25:08.255225 IP localhost.localdomain > dns.google: ICMP echo request, id 10, seq 1, length 64
 17:25:08.301955 IP dns.google > localhost.localdomain: ICMP echo reply, id 10, seq 1, length 64
 ```
