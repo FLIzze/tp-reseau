@@ -89,7 +89,6 @@ link/ether 08:00:27:63:f3:35 brd ff:ff:ff:ff:ff:ff
 ```
 [alexlinux@localhost ~]$ ip n s
 10.3.1.12 dev enp0s8 lladdr 08:00:27:63:f3:35 STALE
-
 ```
 
   - et une commande pour afficher la MAC de `marcel`, depuis `marcel`
@@ -99,7 +98,6 @@ link/ether 08:00:27:63:f3:35 brd ff:ff:ff:ff:ff:ff
 2: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
     link/ether 08:00:27:63:f3:35 brd ff:ff:ff:ff:ff:ff
     inet 10.3.1.12/24 scope global enp0s8
-
 ```
 
 ### 2. Analyse de trames
