@@ -75,14 +75,10 @@ rtt min/avg/max/mdev = 0.785/0.945/1.105/0.160 ms
 - observer les tables ARP des deux machines
 
 ```
-table arp de 10.3.1.11
-[alexlinux@localhost ~]$ ip neigh show
-10.3.1.12 dev enp0s8 lladdr 08:00:27:ff:c5:c3 STALE
-10.3.1.1 dev enp0s8 lladdr 0a:00:27:00:00:00 DELAY
-table arp de 10.3.1.12
-[alexlinux@localhost ~]$ ip neigh show
-10.3.1.11 dev enp0s8 lladdr 08:00:27:a8:e7:70 STALE
-10.3.1.1 dev enp0s8 lladdr 0a:00:27:00:00:00 REACHABLE
+link/ether 08:00:27:c4:f6:64 brd ff:ff:ff:ff:ff:ff
+    inet 10.3.1.11/24 scope global enp0s8
+link/ether 08:00:27:63:f3:35 brd ff:ff:ff:ff:ff:ff
+    inet 10.3.1.12/24 scope global enp0s8
 ```
 
 - repérer l'adresse MAC de `john` dans la table ARP de `marcel` et vice-versa
@@ -91,9 +87,8 @@ table arp de 10.3.1.12
   - une commande pour voir la MAC de `marcel` dans la table ARP de `john`
 
 ```
-toujours avec ip neigh show
-10.3.1.11 dev enp0s8 lladdr 08:00:27:a8:e7:70 STALE john
-10.3.1.12 dev enp0s8 lladdr 08:00:27:ff:c5:c3 STALE marcel
+[alexlinux@localhost ~]$ ip n s
+10.3.1.12 dev enp0s8 lladdr 08:00:27:63:f3:35 STALE
 ```
 
   - et une commande pour afficher la MAC de `marcel`, depuis `marcel`
@@ -101,8 +96,8 @@ toujours avec ip neigh show
 ```
 [alexlinux@localhost ~]$ ip a
 2: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:a8:e7:70 brd ff:ff:ff:ff:ff:ff
-    inet 10.3.1.11/24 brd 10.3.1.255 scope global noprefixroute enp0s8
+    link/ether 08:00:27:63:f3:35 brd ff:ff:ff:ff:ff:ff
+    inet 10.3.1.12/24 scope global enp0s8
 ```
 
 ### 2. Analyse de trames
@@ -310,16 +305,10 @@ PING google.com (142.250.179.78) 56(84) bytes of data.
 
 - effectuez un `ping 8.8.8.8` depuis `john`
 - capturez le ping depuis `john` avec `tcpdump`
-
-```
-istening on enp0s8, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-17:07:53.911126 IP localhost.localdomain > dns.google: ICMP echo request, id 5, seq 1, length 64
-17:07:53.950821 IP dns.google > localhost.localdomain: ICMP echo reply, id 5, seq 1, length 64
-```
-
 - analysez un ping aller et le retour qui correspond et mettez dans un tableau :
 
 ```
+avec localhost qui a comme ip 10.3.1.11 et le dns 8.8.8.8.
 17:25:08.255225 IP localhost.localdomain > dns.google: ICMP echo request, id 10, seq 1, length 64
 17:25:08.301955 IP dns.google > localhost.localdomain: ICMP echo reply, id 10, seq 1, length 64
 ```
