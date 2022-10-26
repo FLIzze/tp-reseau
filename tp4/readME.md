@@ -76,13 +76,13 @@ port source : 43816
 
 Application 4 := VrChat
 ip dest : 104.18.32.143
-port dest : 35250
-port source : 443
+port dest : 443
+port source : 35250
 
 Application 5 := Discord
 ip dest : 35.186.224.47
-port dest : 47654
-port source : 443
+port dest : 443
+port source : 47654
 ```
 
 > Dès qu'on se connecte à un serveur, notre PC ouvre un port random. Une fois la connexion TCP ou UDP établie, entre le port de notre PC et le port du serveur qui est en écoute, on parle de tunnel TCP ou de tunnel UDP.
