@@ -484,8 +484,6 @@ Oct 25 17:02:53 tp4.b1 named[1269]: resolver priming query complete
 
 ```                                         [::1]:53                                           [::]:*                    users:(("named",pid=1269,fd=22))                
 tcp                  LISTEN                0                      10                                        10.4.1.201:53                                        0.0.0.0:*                    users:(("named",pid=1269,fd=21))                
-tcp                  LISTEN                0                      10                                         127.0.0.1:53                                        0.0.0.0:*                    users:(("named",pid=1269,fd=17))                
-tcp                  LISTEN                0                      10                                             [::1]:53                                           [::]:*                    users:(("named",pid=1269,fd=23))    
 ```
 
 🌞 **Ouvrez le bon port dans le firewall**
@@ -544,8 +542,7 @@ PING www.google.com (142.250.179.100) 56(84) bytes of data.
 ```
 [alexandrebel@DESKTOP-63CFBH0 ~]$ ping node1.tp4.b1
 PING node1.tp4.b1 (10.4.1.11) 56(84) bytes of data.
-64 bytes from 10.4.1.11 (10.4.1.11): icmp_seq=1 ttl=64 time=0.247 ms
-64 bytes from 10.4.1.11 (10.4.1.11): icmp_seq=2 ttl=64 time=0.270 ms
+64 bytes from 10.4.1.11 (10.4.1.11): irange loopeq=2 ttl=64 time=0.270 ms
 ```
 
 ```
