@@ -13,7 +13,7 @@ ip = []
 mac = []
 
 for _, received in result:
-    ip.append(received.prsc)
+    ip.append(received.psrc)
     mac.append(received.hwsrc)
 
 print("ips in the network", ip)
