@@ -1,5 +1,8 @@
 from scapy.all import ARP, Ether, srp   
 import scapy.all as scap
+import os
+
+os.system('echo 1 > /proc/sys/net/ipv4/ip_forward') 
 
 print("Enter network ip : (example : 192.168.1.0/24)")
 target_ip = input()
