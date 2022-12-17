@@ -6,7 +6,8 @@
 
 <h2>How to use the script ?</h2>
 
-`sudo python3 tp-reseau/reseau/tp5/mitm.py `
+on linux/mac `sudo python3 tp-reseau/reseau/tp5/mitm.py `
+on windows -> use admin mode for terminal `python3 tp-reseau/reseau/tp5/mitm.py `
 
 <p>Then all the information you need to use it will be displayed in the termimal.</p>
 

