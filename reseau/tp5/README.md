@@ -16,32 +16,36 @@
 
 this is the router's neigh table before using the script</p>
 
-`
+```
 [alexlinux@router ~]$ ip n s
 10.105.1.11 dev enp0s3 lladdr 08:00:27:47:3b:71 REACHABLE 
 10.105.1.69 dev enp0s3 lladdr 08:00:27:98:4a:a4 REACHABLE 
-`
+```
 
 <p>same table after the use of the script</p>
 
-`[alexlinux@router ~]$ ip n s
+```
+[alexlinux@router ~]$ ip n s
 10.105.1.11 dev enp0s3 lladdr 08:00:27:47:3b:71 REACHABLE 
 10.105.1.69 dev enp0s3 lladdr 08:00:27:47:3b:71 STALE 
-`
+```
 <p>as you can see, they now both got the hacker's mac which mean the router will send data to hacker
 
 victim table before</p>
 
-`alexlinux@alexlinux-VirtualBox:~$ ip n s
+```
+alexlinux@alexlinux-VirtualBox:~$ ip n s
 10.105.1.254 dev enp0s3 lladdr 08:00:27:3a:5d:30 REACHABLE
-10.105.1.11 dev enp0s3 lladdr 08:00:27:47:3b:71 REACHABLE`
+10.105.1.11 dev enp0s3 lladdr 08:00:27:47:3b:71 REACHABLE
+```
 
 <p>after</p>
 
-`alexlinux@alexlinux-VirtualBox:~$ ip n s
+```
+alexlinux@alexlinux-VirtualBox:~$ ip n s
 10.105.1.254 dev enp0s3 lladdr 08:00:27:47:3b:71 STALE
 10.105.1.11 dev enp0s3 lladdr 08:00:27:47:3b:71 STALE
-`
+```
 
 <p>router's mac is now the same as the hacker which mean that he'll receive data from you. The hacker is now successfully in the middle.
 
