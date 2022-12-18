@@ -6,6 +6,7 @@ import time
 import platform
 import ipaddress
 import signal
+import netifaces as ni
 
 def checkSystem():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -22,13 +23,23 @@ def checkSystem():
         
 def graphBar():
     os.system('cls' if os.name == 'nt' else 'clear')
-    print('     -------------------------')
-    print("     |MITM, GET INFO FROM DNS|")
-    print('     -------------------------')
+    print(" __  __ ___ _____ __  __ ")
+    print("|  \/  |_ _|_   _|  \/  |")
+    print("| |\/| || |  | | | |\/| |")
+    print("| |  | || |  | | | |  | |")
+    print("|_|  |_|___| |_| |_|  |_|")
+
     print("")
 
 def login():
-    target_ip = input("Enter network ip : (example : 192.168.1.0/24)\n")
+    os.chdir("/sys/class/net")
+    interface_names = os.listdir()
+    print(interface_names)
+    discovering = input("on which interface would you like to discover network ? (1, 2, 3)...")
+    ip = ni.ifaddresses(interface_names[int(discovering)-1])[ni.AF_INET][0]['addr']
+    ip1, ip2, ip3, _ = ip.split(".")
+    target_ip = ip1+'.'+ip2+'.'+ip3+'.0/24'
+    print(target_ip)
     if not checkIP(target_ip):
         os.system('cls' if os.name == 'nt' else 'clear')
         graphBar()
