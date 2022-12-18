@@ -6,8 +6,10 @@
 
 <h2>How to use the script ?</h2>
 
-on linux/mac `sudo python3 tp-reseau/reseau/tp5/mitm.py `
-on windows / may not work on windows! -> use admin mode for terminal `python3 tp-reseau/reseau/tp5/mitm.py `
+on linux/mac `sudo python3 tp-reseau/reseau/tp5/main.py `
+`pip3 install -r requirements.txt`
+
+on windows / may not work on windows! -> use admin mode for terminal `python3 tp-reseau/reseau/tp5/main.py `
 
 <p>Then all the information you need to use it will be displayed in the termimal.</p>
 
@@ -51,3 +53,5 @@ alexlinux@alexlinux-VirtualBox:~$ ip n s
 <p>router's mac is now the same as the hacker which mean that he'll receive data from you. The hacker is now successfully in the middle.
 
 once you're in the middle you can use wireshark to get your victim's dns requests [like this](/reseau/tp5/tp5.pcapng)</p>
+
+<h2>blablabla only for educational purposes not for an use in illegal situation.</h2>
